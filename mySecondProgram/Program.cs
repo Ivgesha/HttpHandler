@@ -9,7 +9,7 @@ namespace mySecondProgram
     {
         const int port = 8080;
         static void Main(string[] args) {
-
+            string responseString;
             try
             {
                 if (!HttpListener.IsSupported)
@@ -26,9 +26,11 @@ namespace mySecondProgram
                 HttpListenerContext context = listener.GetContext();        // Blocking line
                 HttpListenerRequest request = context.Request;
 
-
+                responseString = "<HTML><BODY> Hello From C#!</BODY></HTML>";
                 Console.WriteLine("passed blocking line ");
-            }
+
+
+             }
             catch (Exception e)
             {
                 Console.WriteLine("Error: " + e.Message);
