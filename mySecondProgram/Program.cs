@@ -8,11 +8,19 @@ namespace mySecondProgram
     class Program
     {
         static string url;
+        const int sleepTime = 10000;     // 10 sec
         static void Main(string[] args)
         {
             string responseString;
             url = "http://localhost:8080/";
-            
+
+            DBConnection db = new DBConnection();
+            db.Insert();
+
+
+            Console.ReadLine();
+
+            Console.WriteLine("-----------");
 
             while (true)
             {
@@ -52,6 +60,7 @@ namespace mySecondProgram
                 catch (Exception e)
                 {
                     Console.WriteLine("Fail: " + e.Message);
+                    Thread.Sleep(sleepTime);
 
                 }
             }

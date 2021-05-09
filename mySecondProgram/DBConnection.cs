@@ -28,6 +28,13 @@ namespace mySecondProgram
 
         // todo: check me out 
         // https://www.codeproject.com/Articles/43438/Connect-C-to-MySQL
+
+        public DBConnection() {
+            initialize();
+        }
+
+
+
         private void initialize() {
         server = "localhost";
             //database = "connect csharp to mysql";
@@ -36,15 +43,20 @@ namespace mySecondProgram
             uid = "root";
             password = "MySuperPassword";
             string connectionString;
-            connectionString = "SERVER=" + server + ";" + "DATABASE=" +
-            database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
+            //connectionString = "SERVER=" + server + ";" + "DATABASE=" +
+            //database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
+
+
+            // Server=myServerAddress;Port=1234;Database=myDataBase;Uid=myUsername;Pwd=myPassword;
+            connectionString = "Server=localhost;Port=3306;Database=http_requests;Uid=root;Pwd=MySuperPassword;";
+            //connectionString = "datasource=localhost;port=3306;username=root;password=MySuperPassword";
 
             connection = new MySqlConnection(connectionString);
 
         }
         //open connection to database
 
-        private bool openConnection()
+        private bool OpenConnection()
         {
             try
             {
@@ -61,11 +73,11 @@ namespace mySecondProgram
                 switch (ex.Number)
                 {
                     case 0:
-                        Console.WriteLine("Cannot connect to server.  Contact administrator");
+                        Console.WriteLine("Cannot connect to server.  Contact administrator " + ex.Message);
                         break;
 
                     case 1045:
-                        Console.WriteLine("Invalid username/password, please try again");
+                        Console.WriteLine("Invalid username/password, please try again " + ex.Message);
                         break;
                 }
                 return false;
@@ -73,7 +85,7 @@ namespace mySecondProgram
         }
 
         //Close connection
-        private bool closeConnection()
+        private bool CloseConnection()
         {
             try
             {
@@ -90,7 +102,7 @@ namespace mySecondProgram
         public void Insert()
         {
             string str = "Insert into http_requests_history (end_point,method,header,body)values(@endPoint,@method,@header,@body)";
-            if (this.openConnection() == true) {
+            if (this.OpenConnection() == true) {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.CommandText = str;
                 cmd.Parameters.AddWithValue("@endPoint", "/EndPoint");
@@ -100,7 +112,8 @@ namespace mySecondProgram
                 cmd.Connection = connection;
                 cmd.ExecuteNonQuery();
 
-    
+                this.CloseConnection();
+     
             }
 
         }
